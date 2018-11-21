@@ -9,8 +9,8 @@ import retrofit2.http.Path
 
 interface GitHubService {
 
-    @GET("users/{username}/repos")
-    fun listRepos(@Path("username") username: String): Call<List<Repo>>
+    @GET("users/{owner}/repos")
+    fun listRepos(@Path("owner") owner: String): Call<List<Repo>>
 
 
     companion object {
@@ -23,8 +23,4 @@ interface GitHubService {
             return retrofit.create(GitHubService::class.java)
         }
     }
-}
-
-val gitHubService by lazy {
-    GitHubService.newInstance()
 }
