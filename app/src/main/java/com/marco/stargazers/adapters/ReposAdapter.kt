@@ -2,11 +2,11 @@ package com.marco.stargazers.adapters
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.marco.stargazers.R
 import com.marco.stargazers.interfaces.RepoListener
 import com.marco.stargazers.models.service.Repo
@@ -42,10 +42,20 @@ class ReposAdapter(private val repos : List<Repo>) : RecyclerView.Adapter<ReposA
 
     inner class RepoViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
-        val title : TextView = itemView.repo_title
+        private val title : TextView = itemView.repo_title
+        private val desc : TextView = itemView.repo_desc
+        private val language : TextView = itemView.repo_language
+        private val stargazers : TextView = itemView.repo_stargazers
 
         fun bind(repo :Repo){
+
             title.text = repo.name
+            desc.text = repo.description
+            language.text = repo.language
+            stargazers.text = "${repo.stargazers}"
+
+            desc.visibility = if(repo.description != null) VISIBLE else GONE
+
         }
 
     }
