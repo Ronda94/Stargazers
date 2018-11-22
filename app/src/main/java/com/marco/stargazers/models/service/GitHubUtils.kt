@@ -1,5 +1,6 @@
 package com.marco.stargazers.models.service
 
+import com.marco.stargazers.models.Repo
 import retrofit2.Call
 
 

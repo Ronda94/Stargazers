@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.marco.stargazers.R
 import com.marco.stargazers.interfaces.RepoListener
-import com.marco.stargazers.models.service.Repo
+import com.marco.stargazers.models.Repo
 import kotlinx.android.synthetic.main.item_repo.view.*
 
 /**

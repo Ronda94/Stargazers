@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marco.stargazers.R
 import com.marco.stargazers.adapters.ReposAdapter
-import com.marco.stargazers.models.service.Repo
+import com.marco.stargazers.models.Repo
 import com.marco.stargazers.models.service.listRepos
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
