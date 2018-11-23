@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Stargazers</string>
+    <string name="no_repo_found">No repositories found for this username</string>
 </resources>

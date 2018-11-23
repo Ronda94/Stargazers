@@ -16,8 +16,8 @@ import kotlinx.android.synthetic.main.item_repo.view.*
  * Created by marco on 22/11/2018
  */
 
-private const val VIEW_ITEM = 0
-private const val VIEW_LOADING = 1
+const val VIEW_ITEM = 0
+const val VIEW_LOADING = 1
 
 class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -52,7 +52,7 @@ class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<Recyc
 
     }
 
-    inner class RepoViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    private inner class RepoViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
 
         private val title : TextView = itemView.repo_title
         private val desc : TextView = itemView.repo_desc
@@ -72,6 +72,8 @@ class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<Recyc
 
     }
 
-    inner class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+
 
 }
+
+class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
