@@ -6,4 +6,5 @@ data class Repo(
     @SerializedName("name") val name: String,
     @SerializedName("description") val description: String?,
     @SerializedName("language") val language: String?,
-    @SerializedName("stargazers_count") val stargazers : Number)
+    @SerializedName("stargazers_count") val stargazers : Number,
+    @SerializedName("avatar_url") val ownerImageUrl : String)
