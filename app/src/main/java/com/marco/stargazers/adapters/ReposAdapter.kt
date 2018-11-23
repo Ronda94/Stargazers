@@ -16,26 +16,38 @@ import kotlinx.android.synthetic.main.item_repo.view.*
  * Created by marco on 22/11/2018
  */
 
-class ReposAdapter(private val repos : List<Repo>) : RecyclerView.Adapter<ReposAdapter.RepoViewHolder>() {
+private const val VIEW_ITEM = 0
+private const val VIEW_LOADING = 1
+
+class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listener : RepoListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposAdapter.RepoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return RepoViewHolder(layoutInflater.inflate(R.layout.item_repo, parent, false))
+
+        return when (viewType){
+            VIEW_ITEM -> RepoViewHolder(layoutInflater.inflate(R.layout.item_repo, parent, false))
+            else -> LoadingViewHolder(layoutInflater.inflate(R.layout.item_loading,parent,false))
+        }
     }
 
 
     override fun getItemCount(): Int = repos.size
 
+    override fun getItemViewType(position: Int): Int {
+        return if (repos[position] == null) VIEW_LOADING else VIEW_ITEM
+    }
 
-    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        val item = this.repos[position]
+        val item = this.repos[position] ?: return
 
-        holder.bind(item)
-        holder.itemView.setOnClickListener {
-            listener?.onRepoSelected(item)
+        (holder as? RepoViewHolder)?.let {
+            it.bind(item)
+            holder.itemView.setOnClickListener {
+                listener?.onRepoSelected(item)
+            }
         }
 
     }
@@ -59,5 +71,7 @@ class ReposAdapter(private val repos : List<Repo>) : RecyclerView.Adapter<ReposA
         }
 
     }
+
+    inner class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
 }
