@@ -2,4 +2,6 @@
     <string name="app_name">Stargazers</string>
     <string name="no_repo_found">No repositories found for this username</string>
     <string name="search">Search</string>
+    <string name="search_user_repo">Search username to see its public repos</string>
+    <string name="user">User</string>
 </resources>

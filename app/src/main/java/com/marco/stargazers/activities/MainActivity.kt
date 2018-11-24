@@ -1,10 +1,13 @@
 package com.marco.stargazers.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marco.stargazers.R
 import com.marco.stargazers.adapters.ReposAdapter
@@ -17,6 +20,7 @@ import retrofit2.Response
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.marco.stargazers.interfaces.RepoListener
+import kotlinx.android.synthetic.main.empty_view.*
 
 private const val VISIBLE_TRESHOLD = 3
 const val REPO_EXTRA = "repoExtra"
@@ -32,6 +36,10 @@ class MainActivity : AppCompatActivity(), RepoListener {
         field = value
 
         if (value){
+            if (repos.isEmpty()){
+                empty_view.visibility = GONE
+                main_recycler.visibility = VISIBLE
+            }
             repos.add(null)
             adapter?.notifyItemInserted(repos.lastIndex)
         }else {
@@ -39,12 +47,13 @@ class MainActivity : AppCompatActivity(), RepoListener {
             repos.removeAt(lastIndex)
             adapter?.notifyItemRemoved(lastIndex)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initEmptyView()
 
         adapter = ReposAdapter(repos)
         adapter?.listener = this
@@ -55,6 +64,7 @@ class MainActivity : AppCompatActivity(), RepoListener {
         main_recycler.adapter = adapter
 
         main_send_btn.setOnClickListener {
+            it.hideKeyboard()
             clearRepos()
             isLoading = true
             listRepos(main_editTxt.text.toString(),pageNumber).enqueue(ReposCallBack())
@@ -74,7 +84,8 @@ class MainActivity : AppCompatActivity(), RepoListener {
     }
 
     private fun initEmptyView(){
-
+        empty_img.setImageDrawable(getDrawable(R.drawable.happy_octocat))
+        empty_txt.setText(R.string.search_user_repo)
     }
 
     private fun addRepos(newRepos : List<Repo>){
@@ -105,26 +116,11 @@ class MainActivity : AppCompatActivity(), RepoListener {
             empty_view.visibility = GONE
             main_recycler.visibility = VISIBLE
         }
+    }
 
-
-//
-//        if (!hasNewRepo && repos.isEmpty()){
-//
-//        }
-//
-//        if (newRepos == null || newRepos.isEmpty()){
-//            if (repos.isEmpty()) {
-//                Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
-//                empty_view.visibility = VISIBLE
-//                main_recycler.visibility = GONE
-//            }
-//            pageNumber = 0
-//            return
-//        }
-//
-//
-//        pageNumber++
-//        addRepos(newRepos)
+    private fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     override fun onRepoSelected(repo: Repo) {
@@ -146,14 +142,6 @@ class MainActivity : AppCompatActivity(), RepoListener {
             isLoading = false
             val newRepos = response.body()
             checkRepos(newRepos)
-//            if (newRepos == null || newRepos.isEmpty()){
-//                if (repos.isEmpty())
-//                    Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
-//                pageNumber = 0
-//                return
-//            }
-//            pageNumber++
-//            addRepos(newRepos)
         }
     }
 }
