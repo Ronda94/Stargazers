@@ -3,6 +3,8 @@ package com.marco.stargazers.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.marco.stargazers.R
 import com.marco.stargazers.adapters.ReposAdapter
@@ -71,6 +73,10 @@ class MainActivity : AppCompatActivity(), RepoListener {
         })
     }
 
+    private fun initEmptyView(){
+
+    }
+
     private fun addRepos(newRepos : List<Repo>){
         val lastIndex = repos.lastIndex + 1
         repos.addAll(newRepos)
@@ -81,6 +87,44 @@ class MainActivity : AppCompatActivity(), RepoListener {
         pageNumber = 1
         repos.clear()
         adapter?.notifyDataSetChanged()
+    }
+
+    private fun checkRepos(newRepos: List<Repo>?){
+
+        if (!newRepos.isNullOrEmpty()) {
+            addRepos(newRepos)
+            pageNumber++
+        }else
+            pageNumber = 0
+
+        if (repos.isEmpty()){
+            Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
+            empty_view.visibility = VISIBLE
+            main_recycler.visibility = GONE
+        }else {
+            empty_view.visibility = GONE
+            main_recycler.visibility = VISIBLE
+        }
+
+
+//
+//        if (!hasNewRepo && repos.isEmpty()){
+//
+//        }
+//
+//        if (newRepos == null || newRepos.isEmpty()){
+//            if (repos.isEmpty()) {
+//                Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
+//                empty_view.visibility = VISIBLE
+//                main_recycler.visibility = GONE
+//            }
+//            pageNumber = 0
+//            return
+//        }
+//
+//
+//        pageNumber++
+//        addRepos(newRepos)
     }
 
     override fun onRepoSelected(repo: Repo) {
@@ -101,14 +145,15 @@ class MainActivity : AppCompatActivity(), RepoListener {
         override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
             isLoading = false
             val newRepos = response.body()
-            if (newRepos == null || newRepos.isEmpty()){
-                if (repos.isEmpty())
-                    Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG ).show()
-                pageNumber = 0
-                return
-            }
-            pageNumber++
-            addRepos(newRepos)
+            checkRepos(newRepos)
+//            if (newRepos == null || newRepos.isEmpty()){
+//                if (repos.isEmpty())
+//                    Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
+//                pageNumber = 0
+//                return
+//            }
+//            pageNumber++
+//            addRepos(newRepos)
         }
     }
 }

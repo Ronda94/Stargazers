@@ -23,9 +23,12 @@ private const val VISIBLE_TRESHOLD = 5
 class StargazersActivity : AppCompatActivity() {
 
     private lateinit var repo : Repo
-    private val stargazers = mutableListOf<GitHubUser?>()
     private var adapter : StargazersAdapter? = null
     private var pageNumber : Int = 1
+
+    private val stargazers = mutableListOf<GitHubUser?>()
+
+
 
     private var isLoading : Boolean = false
         set(value) {
@@ -55,11 +58,10 @@ class StargazersActivity : AppCompatActivity() {
 
         adapter = StargazersAdapter(stargazers)
 
-        if (intent.hasExtra(REPO_EXTRA)){
-            repo = intent.getParcelableExtra(REPO_EXTRA)
+        intent.getParcelableExtra<Repo>(REPO_EXTRA)?.let {
+            repo = it
             initHeader()
-        }else
-            return
+        } ?: return
 
         val linearLayouManager = LinearLayoutManager(this)
         stargazers_recycler.layoutManager = linearLayouManager
