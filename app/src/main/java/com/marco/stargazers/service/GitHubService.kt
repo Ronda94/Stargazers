@@ -1,7 +1,7 @@
 package com.marco.stargazers.service
 
+import com.marco.stargazers.models.GitHubUser
 import com.marco.stargazers.models.Repo
-import com.marco.stargazers.models.Stargazer
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,7 +16,7 @@ interface GitHubService {
     fun listRepos(@Path("username") username: String, @Query("page") page: Int) : Call<List<Repo>>
 
     @GET("/repos/{owner}/{repo}/stargazers")
-    fun listStargazers(@Path("owner") owner: String, @Path("repo") repo: String, @Query("page") page: Int) : Call<List<Stargazer>>
+    fun listStargazers(@Path("owner") owner: String, @Path("repo") repo: String, @Query("page") page: Int) : Call<List<GitHubUser>>
 
     companion object {
         fun newInstance(): GitHubService {

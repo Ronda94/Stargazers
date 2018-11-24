@@ -1,5 +1,6 @@
 package com.marco.stargazers.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,10 +14,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.marco.stargazers.interfaces.RepoListener
 
 private const val VISIBLE_TRESHOLD = 3
+const val REPO_EXTRA = "repoExtra"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RepoListener {
 
     private val repos = mutableListOf<Repo?>()
     private var adapter : ReposAdapter? = null
@@ -42,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         adapter = ReposAdapter(repos)
+        adapter?.listener = this
 
         val linearLayouManager = LinearLayoutManager(this)
         main_recycler.layoutManager = linearLayouManager
@@ -79,9 +83,13 @@ class MainActivity : AppCompatActivity() {
         adapter?.notifyDataSetChanged()
     }
 
-    private fun showNoRepoFound(){
-        Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG ).show()
+    override fun onRepoSelected(repo: Repo) {
+        val intent = Intent(this, StargazersActivity::class.java).apply {
+            putExtra(REPO_EXTRA, repo)
+        }
+        startActivity(intent)
     }
+
 
     inner class ReposCallBack : Callback<List<Repo>>{
 
@@ -95,7 +103,7 @@ class MainActivity : AppCompatActivity() {
             val newRepos = response.body()
             if (newRepos == null || newRepos.isEmpty()){
                 if (repos.isEmpty())
-                    showNoRepoFound()
+                    Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG ).show()
                 pageNumber = 0
                 return
             }
