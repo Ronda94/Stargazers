@@ -14,4 +14,4 @@ Simply checkout the project in Android Studio, sync, build and run!
 
 ## Demo
 
-An apk demo and a video demo are in the root of the project
+An apk and a video demo are in the root of the project
