@@ -10,7 +10,6 @@
     android:focusableInTouchMode="true"
     tools:context=".activities.MainActivity">
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/main_txt_input"
         android:layout_width="0dp"
@@ -32,15 +31,14 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/main_send_btn"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/search"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         app:layout_constraintBottom_toBottomOf="@+id/main_txt_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

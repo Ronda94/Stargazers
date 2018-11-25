@@ -10,7 +10,7 @@ private val gitHubService by lazy {
 }
 
 fun listRepos(username: String, page: Int) : Call<List<Repo>> {
-        return gitHubService.listRepos(username,page)
+    return gitHubService.listRepos(username,page)
 }
 
 fun listStargazers(ownerName: String, repoName: String, page: Int): Call<List<GitHubUser>>{

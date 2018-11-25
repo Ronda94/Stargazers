@@ -25,17 +25,12 @@ class StargazersAdapter(private val users : List<GitHubUser?>) : RecyclerView.Ad
 
     override fun getItemCount(): Int = users.size
 
-    override fun getItemViewType(position: Int): Int {
-        return if (users[position] == null) VIEW_LOADING else VIEW_ITEM
-    }
+    override fun getItemViewType(position: Int): Int = users[position]?.let { VIEW_ITEM } ?: VIEW_LOADING
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val item = this.users[position] ?: return
         (holder as? StargazerViewHolder)?.bind(item)
-
     }
-
 
     inner class StargazerViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview){
 
@@ -46,8 +41,5 @@ class StargazersAdapter(private val users : List<GitHubUser?>) : RecyclerView.Ad
             nameTxt.text  = user.name
             Glide.with(itemView.context).load(user.imageUrl).into(avatarImg)
         }
-
     }
-
-
 }

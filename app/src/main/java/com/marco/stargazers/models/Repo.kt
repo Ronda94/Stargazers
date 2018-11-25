@@ -13,6 +13,8 @@ data class Repo(
     @SerializedName("owner") val owner: Owner
     ) : Parcelable
 
+
+
 @Parcelize
 data class Owner(
     @SerializedName("avatar_url") val imageUrl : String,

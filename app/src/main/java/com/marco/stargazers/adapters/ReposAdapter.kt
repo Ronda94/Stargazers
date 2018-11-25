@@ -25,31 +25,24 @@ class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-
         return when (viewType){
             VIEW_ITEM -> RepoViewHolder(layoutInflater.inflate(R.layout.item_repo, parent, false))
             else -> LoadingViewHolder(layoutInflater.inflate(R.layout.item_loading,parent,false))
         }
     }
 
-
     override fun getItemCount(): Int = repos.size
 
-    override fun getItemViewType(position: Int): Int {
-        return if (repos[position] == null) VIEW_LOADING else VIEW_ITEM
-    }
+    override fun getItemViewType(position: Int): Int = repos[position]?.let { VIEW_ITEM } ?: VIEW_LOADING
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val item = this.repos[position] ?: return
-
         (holder as? RepoViewHolder)?.let {
             it.bind(item)
             holder.itemView.setOnClickListener {
                 listener?.onRepoSelected(item)
             }
         }
-
     }
 
     private inner class RepoViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
@@ -60,20 +53,14 @@ class ReposAdapter(private val repos : List<Repo?>) : RecyclerView.Adapter<Recyc
         private val stargazers : TextView = itemView.repo_stargazers
 
         fun bind(repo :Repo){
-
             title.text = repo.name
             desc.text = repo.description
             language.text = repo.language
             stargazers.text = "${repo.stargazers}"
 
             desc.visibility = if(repo.description != null) VISIBLE else GONE
-
         }
-
     }
-
-
-
 }
 
 class LoadingViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)

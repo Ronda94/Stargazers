@@ -129,15 +129,13 @@ class MainActivity : AppCompatActivity(), RepoListener {
 
     override fun onRepoSelected(repo: Repo) {
 
-        if (repo.stargazers.toInt() == 0){
+        if (repo.stargazers.toInt() == 0)
             showSnackbarMessage(R.string.no_stargazers_found)
-            return
-        }
+        else
+            startActivity(Intent(this, StargazersActivity::class.java).apply {
+                putExtra(REPO_EXTRA, repo)
+            })
 
-        val intent = Intent(this, StargazersActivity::class.java).apply {
-            putExtra(REPO_EXTRA, repo)
-        }
-        startActivity(intent)
     }
 
 

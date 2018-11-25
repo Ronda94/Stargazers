@@ -25,10 +25,7 @@ class StargazersActivity : AppCompatActivity() {
     private lateinit var repo : Repo
     private var adapter : StargazersAdapter? = null
     private var pageNumber : Int = 1
-
     private val stargazers = mutableListOf<GitHubUser?>()
-
-
 
     private var isLoading : Boolean = false
         set(value) {
@@ -56,12 +53,12 @@ class StargazersActivity : AppCompatActivity() {
         stargazers_collapsing.setExpandedTitleColor(Color.TRANSPARENT)
         stargazers_collapsing.setCollapsedTitleTextColor(Color.WHITE)
 
-        adapter = StargazersAdapter(stargazers)
-
         intent.getParcelableExtra<Repo>(REPO_EXTRA)?.let {
             repo = it
             initHeader()
         } ?: return
+
+        adapter = StargazersAdapter(stargazers)
 
         val linearLayouManager = LinearLayoutManager(this)
         stargazers_recycler.layoutManager = linearLayouManager
@@ -75,9 +72,8 @@ class StargazersActivity : AppCompatActivity() {
                 super.onScrolled(recyclerView, dx, dy)
                 val totalItemCount = linearLayouManager.itemCount
                 val lastVisibleItem = linearLayouManager.findLastVisibleItemPosition()
-                if (!isLoading && lastVisibleItem != RecyclerView.NO_POSITION && totalItemCount <= lastVisibleItem + VISIBLE_TRESHOLD && pageNumber != 0) {
+                if (!isLoading && lastVisibleItem != RecyclerView.NO_POSITION && totalItemCount <= lastVisibleItem + VISIBLE_TRESHOLD && pageNumber != 0)
                     searchStargazers()
-                }
             }
         })
 
@@ -101,11 +97,6 @@ class StargazersActivity : AppCompatActivity() {
         adapter?.notifyItemRangeInserted(lastIndex, newStargazers.size)
     }
 
-    private fun showNoStargazersView(){
-
-    }
-
-
     inner class StargazersCallBack : retrofit2.Callback<List<GitHubUser>> {
 
         override fun onFailure(call: Call<List<GitHubUser>>, t: Throwable) {
@@ -116,14 +107,12 @@ class StargazersActivity : AppCompatActivity() {
         override fun onResponse(call: Call<List<GitHubUser>>, response: Response<List<GitHubUser>>) {
             isLoading = false
             val newStargazers = response.body()
-            if (newStargazers == null || newStargazers.isEmpty()){
-                if (stargazers.isEmpty())
-                    showNoStargazersView()
+            if (newStargazers == null || newStargazers.isEmpty())
                 pageNumber = 0
-                return
+            else {
+                pageNumber++
+                addStargazers(newStargazers)
             }
-            pageNumber++
-            addStargazers(newStargazers)
         }
     }
 }

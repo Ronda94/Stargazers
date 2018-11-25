@@ -9,4 +9,8 @@
     <string name="no_repo_found">No public repositories found for this user</string>
     <string name="no_stargazers_found">Sorry no stargazers for this repo. Try another one!</string>
 
+    <string name="bordered_img_descr">Bordered Image</string>
+    <string name="empty_img_descr">Image of the empty view</string>
+    <string name="star_img_descr">Star image</string>
+
 </resources>
