@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), RepoListener {
             it.hideKeyboard()
             clearRepos()
             isLoading = true
-            listRepos(main_editTxt.text.toString(),pageNumber).enqueue(ReposCallBack())
+            listRepos(main_txt_edit.text.toString(),pageNumber).enqueue(ReposCallBack())
         }
 
         main_recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), RepoListener {
                 val lastVisibleItem = linearLayouManager.findLastVisibleItemPosition()
                 if (!isLoading && lastVisibleItem != RecyclerView.NO_POSITION && totalItemCount <= lastVisibleItem + VISIBLE_TRESHOLD && pageNumber != 0) {
                     isLoading = true
-                    listRepos(main_editTxt.text.toString(), pageNumber).enqueue(ReposCallBack())
+                    listRepos(main_txt_edit.text.toString(), pageNumber).enqueue(ReposCallBack())
                 }
             }
         })
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), RepoListener {
             pageNumber = 0
 
         if (repos.isEmpty()){
-            Snackbar.make(main_recycler, R.string.no_repo_found, Snackbar.LENGTH_LONG).show()
+            showSnackbarMessage(R.string.no_repo_found)
             empty_view.visibility = VISIBLE
             main_recycler.visibility = GONE
         }else {
@@ -118,12 +118,22 @@ class MainActivity : AppCompatActivity(), RepoListener {
         }
     }
 
+    private fun showSnackbarMessage(localizedId : Int){
+        Snackbar.make(main_constr_layout, localizedId, Snackbar.LENGTH_LONG).show()
+    }
+
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     override fun onRepoSelected(repo: Repo) {
+
+        if (repo.stargazers.toInt() == 0){
+            showSnackbarMessage(R.string.no_stargazers_found)
+            return
+        }
+
         val intent = Intent(this, StargazersActivity::class.java).apply {
             putExtra(REPO_EXTRA, repo)
         }

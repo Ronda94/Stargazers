@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Stargazers</string>
-    <string name="no_repo_found">No repositories found for this username</string>
-    <string name="search">Search</string>
-    <string name="search_user_repo">Search username to see its public repos</string>
+
     <string name="user">User</string>
+    <string name="search">Search</string>
+
+    <string name="search_user_repo">Search user to see its public repos</string>
+
+    <string name="no_repo_found">No public repositories found for this user</string>
+    <string name="no_stargazers_found">Sorry no stargazers for this repo. Try another one!</string>
+
 </resources>
